@@ -47,7 +47,7 @@ def transmit(message):
 
 try:
     while True:
-        transmit("VITEJTE V ARKHAMU STREZTE SE KULTU. NEVERTE NIKOMU. ZITRA VE STEJNOU DOBU POSLU NOVE INSTRUKCE.")   
+        transmit("VITEJTE V ARKHAMU. STREZTE SE KULTU. NEVERTE NIKOMU. ZITRA VE STEJNOU DOBU POSLU NOVE INSTRUKCE.")   
         time.sleep(2)     
 except KeyboardInterrupt:
     GPIO.cleanup()
