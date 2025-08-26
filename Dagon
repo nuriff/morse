@@ -1,0 +1,52 @@
+import RPi.GPIO as GPIO
+import time
+
+# Setup
+LED_PIN = 17  
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(LED_PIN, GPIO.OUT)
+
+DOT = 0.2      
+DASH = DOT*3   
+GAP = DOT      
+LETTER_GAP = DOT*3
+WORD_GAP = DOT*7
+
+MORSE_CODE = {
+    "A": ".-", "B": "-...", "C": "-.-.", "D": "-..",
+    "E": ".", "F": "..-.", "G": "--.", "H": "....",
+    "I": "..", "J": ".---", "K": "-.-", "L": ".-..",
+    "M": "--", "N": "-.", "O": "---", "P": ".--.",
+    "Q": "--.-", "R": ".-.", "S": "...", "T": "-",
+    "U": "..-", "V": "...-", "W": ".--", "X": "-..-",
+    "Y": "-.--", "Z": "--..",
+    "1": ".----", "2": "..---", "3": "...--",
+    "4": "....-", "5": ".....", "6": "-....",
+    "7": "--...", "8": "---..", "9": "----.",
+    "0": "-----",
+}
+
+def blink(symbol):
+    if symbol == ".":
+        GPIO.output(LED_PIN, GPIO.HIGH)
+        time.sleep(DOT)
+    elif symbol == "-":
+        GPIO.output(LED_PIN, GPIO.HIGH)
+        time.sleep(DASH)
+    GPIO.output(LED_PIN, GPIO.LOW)
+    time.sleep(GAP)
+
+def transmit(message):
+    for word in message.upper().split(" "):
+        for letter in word:
+            for symbol in MORSE_CODE.get(letter, ""):
+                blink(symbol)
+            time.sleep(LETTER_GAP - GAP)
+        time.sleep(WORD_GAP - LETTER_GAP)
+
+try:
+    while True:
+        transmit("DAGON")   
+        time.sleep(2)     
+except KeyboardInterrupt:
+    GPIO.cleanup()
